@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Comp</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            margin: 0;
+        }
+        #auth-container {
+            width: 100%;
+            height: 100%;
+            background-color: #555;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border-radius: 15px;
+        }
+        input {
+            height: 20px;
+            width: 50%;
+        }
+        #inputs-container {
+            width: 100%;
+        }
+        .input-wrapper {
+            width:100%;
+            justify-content: center;
+            display: flex;
+        }
+        #sign-up-wrapper {
+            width:100%;
+            justify-content: center;
+            display: flex;
+            cursor: pointer;
+            font-weight: 750;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 25%; height: 25%;">
+        <div id="auth-container">
+            <div id="inputs-container">
+                <div class="input-wrapper">
+                    <input id="email" placeholder="Email">
+                </div>
+                <div style="height: 5vh"></div>
+                <div class="input-wrapper">
+                    <input id="password" placeholder="Password" type="password">
+                </div>
+                <div id="sign-up-wrapper" onclick="createUser()">SIGN UP</div>
+            </div>
+        </div>
+        <div style="width: calc(100% + 10px); display: flex; justify-content: center; text-justify: center; margin-top: 10px; cursor: pointer; font-weight: 750;" onclick="window.location='./signin.html'">
+            Already have an account? Sign in
+        </div>
+    </div>
+</body>
+<script type="module">
+    import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js';
+    import { doc, setDoc, getFirestore } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js'
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js'
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyD7USXryTnEIHRxISXxCOQdyD4q7puHuvw",
+        authDomain: "codezonehs.firebaseapp.com",
+        projectId: "codezonehs",
+        storageBucket: "codezonehs.firebasestorage.app",
+        messagingSenderId: "564878006133",
+        appId: "1:564878006133:web:3acb0b826b57a03943e53c",
+        measurementId: "G-B6CZYS7LRS"
+    };
+
+    const app = initializeApp(firebaseConfig);
+
+    const db = getFirestore(app);
+
+    const auth = getAuth();
+    function createUser() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        
+        createUserWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+            const user = userCredential.user;
+            await setDoc(doc(db, "users", user.uid), {
+                points: 0,
+                problemsDone: [],
+                isAdmin: false
+            });
+            window.location = "./index.html"
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+        });
+    }
+
+    window.createUser = createUser
+</script>
+</html>
