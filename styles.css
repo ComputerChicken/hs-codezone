@@ -13,6 +13,17 @@ body {
     justify-content: right;
     align-items: center;
 }
+.team-container {
+        width: calc(100% - 36px);
+        font-weight: 750;
+        background-color: #666;
+        border: #000 solid 2px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        margin-bottom: 10px;
+    }
 input[type='file'] {
     font-size: 20px;
     font-weight: 750;
@@ -69,7 +80,7 @@ input[type='file']::file-selector-button {
 }
 .problem-container {
     width: calc(100% - 30px);
-    background-color: #444;
+    background-color: #666;
     border-radius: 10px;
     padding: 15px;
     display: flex;

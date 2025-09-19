@@ -46,6 +46,15 @@
     const docRef = doc(db, "problems", "problems");
     const docSnap = await getDoc(docRef);
     const docData = docSnap.data();
+    var docKeysMap = Object.keys(docData).map(function(key) {
+        return [key, docData[key]];
+    });
+
+    docKeysMap.sort(function(first, second) {
+        return first[1].DIFF - second[1].DIFF;
+    });
+
+    console.log(docKeysMap)
 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
@@ -61,23 +70,23 @@
 
     const diffs = ["Easy","Medium","Hard","Extreme","Impossible"]
 
-    Object.keys(docData).forEach((key) => {
+    docKeysMap.forEach((key) => {
         const problemContainer = document.createElement("div")
         problemContainer.className = "problem-container"
-        problemContainer.onclick = function() {window.location = "./problem.html?name=" + key}
+        problemContainer.onclick = function() {window.location = "./problem.html?name=" + key[0]}
 
         const problemNameWrapper = document.createElement("div")
         problemNameWrapper.className = "problem-name-wrapper"
-        problemNameWrapper.textContent = docData[key]["NAME"]
+        problemNameWrapper.textContent = docData[key[0]]["NAME"]
 
         const difficultyWrapper = document.createElement("div")
-        let diff = diffs[docData[key]["DIFF"]]
+        let diff = diffs[docData[key[0]]["DIFF"]]
         difficultyWrapper.className = diff + "-wrapper"
         difficultyWrapper.textContent = diff
 
         const descWrapper = document.createElement("div")
         descWrapper.className = "desc-wrapper"
-        descWrapper.textContent = docData[key]["DESC"]
+        descWrapper.textContent = docData[key[0]]["DESC"]
 
         problemContainer.appendChild(problemNameWrapper)
         problemContainer.appendChild(difficultyWrapper)

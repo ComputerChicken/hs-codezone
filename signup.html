@@ -24,6 +24,7 @@
             align-items: center;
             padding: 10px;
             border-radius: 15px;
+            padding-top: 20px;
         }
         input {
             height: 20px;
@@ -48,13 +49,17 @@
     </style>
 </head>
 <body>
-    <div style="width: 25%; height: 25%;">
+    <div style="width: 25%;">
         <div id="auth-container">
             <div id="inputs-container">
                 <div class="input-wrapper">
+                    <input id="username" placeholder="Username">
+                </div>
+                <div style="height: 2vh"></div>
+                <div class="input-wrapper">
                     <input id="email" placeholder="Email">
                 </div>
-                <div style="height: 5vh"></div>
+                <div style="height: 2vh"></div>
                 <div class="input-wrapper">
                     <input id="password" placeholder="Password" type="password">
                 </div>
@@ -96,7 +101,8 @@
             await setDoc(doc(db, "users", user.uid), {
                 points: 0,
                 problemsDone: [],
-                isAdmin: false
+                isAdmin: false,
+                username: document.getElementById("username").value
             });
             window.location = "./index.html"
         })

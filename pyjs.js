@@ -21,6 +21,7 @@ const docData = docSnap.data();
 
 async function runPython(pyfile, input) {
   let pyodide = await loadPyodide();
+  input = input.replace("^","")
 
   var msgs = ""
   pyodide.setStdout({
@@ -34,8 +35,9 @@ async function runPython(pyfile, input) {
       let userInput = input.split("|||")
       let inputTotal = "";
       userInput.forEach((inp) => {
-        inputTotal += userInput + "\n"
+        inputTotal += inp + "\n"
       })
+      console.log(inputTotal)
       return inputTotal
     }
   });

@@ -65,7 +65,29 @@
     const docSnap = await getDoc(docRef);
     const docData = docSnap.data();
 
-    document.getElementById("desc-box").innerHTML = "Description:<br><br>" + docData[problemName]["DESC"]
+    document.getElementById("desc-box").innerHTML = "Description:<br><br>" + docData[problemName]["DESC"] + "<br><br>Example Input:<br>"
+
+    var exampleInput = ""
+
+    var exampleOutput = ""
+
+    var keys = Object.keys(docData[problemName])
+
+    keys.sort((a, b) => a.localeCompare(b));
+
+    keys.forEach((key) => {
+        if(key != "NAME" && key != "DIFF" && key != "DESC") {
+            exampleInput = key
+        }
+        if(key != "NAME" && key != "DIFF" && key != "DESC") {
+            exampleOutput = docData[problemName][key]
+        }
+    })
+
+    exampleInput = exampleInput.replaceAll("|||","<br>")
+    exampleOutput = exampleOutput.replaceAll("\n","<br>")
+
+    document.getElementById("desc-box").innerHTML += exampleInput + "<br><br>Example Output:<br>" + exampleOutput
 
     var uid;
 
