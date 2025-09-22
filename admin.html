@@ -5,34 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        .break {
+            height: 2px;
+        }
+    </style>
 </head>
 <body>
-    <div style="font-weight: 750; width: 100%;">
-        Add problem
+    <div id="add-problem-container">
+        <div style="font-weight: 750; width: 100%;">
+            Add problem
+        </div>
+        <input placeholder="ID" id="id">
+        <div class="break"></div>
+        <input placeholder="Name" id="name">
+        <div class="break"></div>
+        <input placeholder="Description" id="desc">
+        <div class="break"></div>
+        <input placeholder="Difficulty" id="diff">
+        <div class="break"></div>
+        <input placeholder="Test input 1" id="test1">
+        <div class="break"></div>
+        <input placeholder="Test input 2" id="test2">
+        <div class="break"></div>
+        <input placeholder="Test input 3" id="test3">
+        <div class="break"></div>
+        <input type="file" id="add-problem-file-inp">
+        <div class="break"></div>
+        <button onclick="addProblem()">ADD</button>
     </div>
-    <input placeholder="ID" id="id">
-    <br>
-    <input placeholder="Name" id="name">
-    <br>
-    <input placeholder="Description" id="desc">
-    <br>
-    <input placeholder="Difficulty" id="diff">
-    <br>
-    <input placeholder="Test input 1" id="test1">
-    <br>
-    <input placeholder="Test input 2" id="test2">
-    <br>
-    <input placeholder="Test input 3" id="test3">
-    <br>
-    <input type="file" id="add-problem-file-inp">
-    <br>
-    <button onclick="addProblem()">Add</button>
+    <div id="leaderboard-buttons-container">
+        <button class="leaderboard-button" onclick="changeLeaderboard(false)">Disable Leaderboard</button>
+        <button class="leaderboard-button" onclick="changeLeaderboard(true)">Enable Leaderboard</button>
+    </div>
+    <div id="query-uid-container">
+        <input placeholder="Query UID by Username" style="margin-right: 10px;" id="query-uid-input">
+        <button onclick="queryUid()">Query</button>
+    </div>
 </body>
 <script type="module">
     import { runPython } from "./pyjs.js"
     import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js';
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js'
-    import { doc, getDoc, getFirestore, updateDoc, increment } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js'
+    import { doc, getDoc, getFirestore, updateDoc, increment, setDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js'
     
     const firebaseConfig = {
         apiKey: "AIzaSyD7USXryTnEIHRxISXxCOQdyD4q7puHuvw",
@@ -89,9 +104,27 @@
             };
             reader.readAsText(file);
         }
-        
     }
 
     window.addProblem = addProblem
+
+    async function changeLeaderboard(val) {
+        await updateDoc(doc(db, "settings", "settings"), {leaderboard: val})
+    }
+
+    window.changeLeaderboard = changeLeaderboard
+
+    async function queryUid() {
+        const username = document.getElementById("query-uid-input").value
+        const usersRef = collection(db, "users");
+        const q = query(usersRef, where("username", "==", username));
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            console.log(doc.id, " => ", doc.data());
+        });
+    }
+
+    window.queryUid = queryUid
 </script>
 </html>
