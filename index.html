@@ -43,6 +43,11 @@
 
     const db = getFirestore(app)
 
+    const settingsSnap = await getDoc(doc(db, "settings", "settings"))
+    if(!settingsSnap.data().leaderboard) {
+        document.getElementById("leaderboard-wrapper").remove()
+    }
+
     const docRef = doc(db, "problems", "problems");
     const docSnap = await getDoc(docRef);
     const docData = docSnap.data();
