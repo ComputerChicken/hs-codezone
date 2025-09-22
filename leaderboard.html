@@ -48,6 +48,11 @@
 
     const db = getFirestore(app);
 
+    const settingsSnap = await getDoc(doc(db, "settings", "settings"))
+    if(!settingsSnap.data().leaderboard) {
+        window.location = "./index.html"
+    }
+
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             const userDoc = doc(db, "users", user.uid);
