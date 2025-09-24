@@ -9,9 +9,13 @@
         .break {
             height: 2px;
         }
+        body {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
+    <div id="problemNum" style="width: 100%; font-weight: 750;"></div>
     <div id="add-problem-container">
         <div style="font-weight: 750; width: 100%;">
             Add problem
@@ -126,5 +130,10 @@
     }
 
     window.queryUid = queryUid
+
+    const problems = await getDoc(doc(db,"problems","problems"))
+    const problemsLength = Object.keys(problems.data()).length
+    document.getElementById("problemNum").textContent = "# Problems: " + problemsLength
+
 </script>
 </html>

@@ -51,6 +51,7 @@ async function runPython(pyfile, input) {
 async function check(problemName, pyfile) {
     const problem = docData[problemName]
     var rTrue = true
+    if(pyfile.includes("import")) { rTrue = false }
     for (const key of Object.keys(problem)) {
         if(key != "NAME" && key != "DIFF" && key != "DESC") {
             const codeResult = await runPython(pyfile,key)
