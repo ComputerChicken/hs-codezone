@@ -120,10 +120,6 @@
             await check(problemName, event.target.result).then(async (result) => {
                 console.log(result)
                 if(result) {
-                    const correctEl = document.getElementById("correct")
-                    correctEl.textContent = "Correct"
-                    correctEl.className = "Easy-wrapper"
-
                     const userSnap = await getDoc(doc(db, "users", uid))
                     var problemsDone = userSnap.data()["problemsDone"]
 
@@ -132,11 +128,15 @@
                     var toInc = 0;
 
                     if(!problemsDone.includes(problemName)) {
-                        toInc = parseInt(docData[problemName]["DIFF"]) + 1
+                        toInc = Math.pow(2,parseInt(docData[problemName]["DIFF"]))
+                        console.log(toInc)
                         problemsDone.push(problemName)
                     }
 
                     await updateDoc(doc(db, "users", uid), {points: increment(toInc), problemsDone: problemsDone})
+                    const correctEl = document.getElementById("correct")
+                    correctEl.textContent = "Correct"
+                    correctEl.className = "Easy-wrapper"
                 } else {
                     const correctEl = document.getElementById("correct")
                     correctEl.textContent = "Incorrect"

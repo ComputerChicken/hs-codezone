@@ -84,7 +84,7 @@
         if(!user.isAdmin) {
             const teamContainer = document.createElement("div")
             teamContainer.className = "team-container"
-            teamContainer.textContent = user.username + ": " + user.points
+            teamContainer.textContent = user.username + ": " + user.points  + " points  |   " + user.problemsDone.length + " problems done"
 
             document.getElementById("body").appendChild(teamContainer)
         }
